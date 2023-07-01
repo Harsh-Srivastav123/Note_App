@@ -1,5 +1,9 @@
 package com.example.note_app.screens
 
+import android.net.Uri
+import android.util.Log
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -7,12 +11,11 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.BrowseGallery
 import androidx.compose.material.icons.rounded.Done
 import androidx.compose.material.icons.rounded.KeyboardArrowLeft
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.material.icons.rounded.UploadFile
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -21,6 +24,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.note_app.components.ImageSlider
 import kotlinx.coroutines.delay
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -30,6 +34,14 @@ import java.time.format.FormatStyle
 @Preview(showBackground = true)
 @Composable
 fun NoteScreen() {
+
+    //image from gallery
+    val galleryImage= remember {
+        mutableStateOf<List<Uri>>(emptyList())
+    }
+    val launcher= rememberLauncherForActivityResult(contract = ActivityResultContracts.GetMultipleContents(), onResult = {
+        galleryImage.value=it
+    })
 
     var title = remember {
         mutableStateOf("")
@@ -76,7 +88,16 @@ fun NoteScreen() {
                         .clickable {
 
                         })
-                Spacer(modifier = Modifier.fillMaxWidth(0.85f))
+                Spacer(modifier = Modifier.fillMaxWidth(0.68f))
+                Image(imageVector = Icons.Rounded.UploadFile, contentDescription = null,
+                modifier = Modifier.clickable {
+                    launcher.launch("image/*")
+//                    Log.i("images", galleryImage.value.get(0).toString())
+
+//                    launcher.
+                })
+
+                Spacer(modifier = Modifier.fillMaxWidth(0.35f))
                 Image(imageVector = Icons.Rounded.Done, contentDescription = null,
                     Modifier
                         .size(40.dp)
@@ -115,6 +136,11 @@ fun NoteScreen() {
                 color = Color.Gray
             )
             Divider()
+            Spacer(modifier = Modifier.size(10.dp))
+            if(galleryImage.value.isNotEmpty()){
+                ImageSlider(galleryImage.value)
+                Divider()
+            }
             Spacer(modifier = Modifier.size(10.dp))
             TextField(value = note.value, onValueChange = {
                 note.value = it

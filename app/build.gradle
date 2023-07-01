@@ -66,4 +66,10 @@ dependencies {
     def nav_version = "2.5.3"
     implementation("androidx.navigation:navigation-compose:$nav_version")
     implementation("com.google.accompanist:accompanist-systemuicontroller:0.31.2-alpha")
+
+    //Icons'
+    implementation "androidx.compose.material:material-icons-extended:$compose_ui_version"
+
+    //coil image library
+    implementation("io.coil-kt:coil-compose:2.4.0")
 }
