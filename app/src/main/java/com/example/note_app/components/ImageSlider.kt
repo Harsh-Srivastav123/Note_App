@@ -79,7 +79,7 @@ fun ImageSlider(imageList: List<Uri>) {
                         painter = rememberAsyncImagePainter(
                             ImageRequest.Builder(LocalContext.current)
                                 .data(
-                                    data = Uri.parse(imageList.get(it).toString())
+                                    data = Uri.parse(imageList[it].toString())
                                 ).apply(block = fun ImageRequest.Builder.() {
                                     scale(Scale.FILL).crossfade(true).build()
                                 }).build()
