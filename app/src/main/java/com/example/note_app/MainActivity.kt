@@ -19,7 +19,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             Note_AppTheme {
                 // A surface container using the 'background' color from the theme
-                NoteScreenNavigation()
+                NoteScreenNavigation(this)
             }
         }
     }

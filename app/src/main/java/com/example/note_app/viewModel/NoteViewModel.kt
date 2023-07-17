@@ -6,6 +6,19 @@ import com.example.note_app.model.Note
 
 class NoteViewModel:ViewModel() {
     private var noteList = mutableStateListOf<Note>()
+    fun size():Int{
+        return noteList.size
+    }
+
+    init {
+        noteList.add(Note("fhsdui","dhfs", listOf(),"fsdfno"))
+        noteList.add(Note("fhsdui","dhfs", listOf(),"fsdfno"))
+        noteList.add(Note("fhsdui","dhfs", listOf(),"fsdfno"))
+        noteList.add(Note("fhsdui","dhfs", listOf(),"fsdfno"))
+        noteList.add(Note("fhsdui","dhfs", listOf(),"fsdfno"))
+        noteList.add(Note("fhsdui","dhfs", listOf(),"fsdfno"))
+        noteList.add(Note("fhsdui","dhfs", listOf(),"fsdfno"))
+    }
     fun addNote(note:Note){
         noteList.add(note)
     }

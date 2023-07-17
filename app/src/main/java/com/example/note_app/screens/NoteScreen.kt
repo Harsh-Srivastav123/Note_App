@@ -1,6 +1,9 @@
 package com.example.note_app.screens
 
+import android.content.Context
 import android.net.Uri
+import android.util.Log
+import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
@@ -26,6 +29,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import com.example.note_app.components.ImageSlider
 import com.example.note_app.model.Note
 import com.example.note_app.viewModel.NoteViewModel
@@ -40,7 +44,7 @@ import java.time.format.FormatStyle
 
 @Preview(showBackground = true)
 @Composable
-fun NoteScreen() {
+fun NoteScreen(navController: NavController?=null,context: Context?=null) {
     val systemUiController: SystemUiController = rememberSystemUiController()
     systemUiController.isStatusBarVisible = false // Status bar
     systemUiController.isNavigationBarVisible = false // Navigation bar
@@ -107,9 +111,7 @@ fun NoteScreen() {
                       Image(imageVector = Icons.Rounded.UploadFile, contentDescription = null,
                           modifier = Modifier.clickable {
                               launcher.launch("image/*")
-//                    Log.i("images", galleryImage.value.get(0).toString())
 
-//                    launcher.
                           })
 
                       Spacer(modifier = Modifier.fillMaxWidth(0.35f))
@@ -117,6 +119,7 @@ fun NoteScreen() {
                           Modifier
                               .size(40.dp)
                               .clickable {
+                                  val s = noteViewModel.size()
                                   noteViewModel.addNote(
                                       Note(
                                           title.value,
@@ -125,6 +128,12 @@ fun NoteScreen() {
                                           formatted.value.toString()
                                       )
                                   )
+                                  Log.i("size", s.toString()+"  " +noteViewModel.size())
+
+                                  Toast
+                                      .makeText(context, "note added", Toast.LENGTH_SHORT)
+                                      .show()
+                                  navController?.navigate("HomeScreen")
 
                               })
                   }
