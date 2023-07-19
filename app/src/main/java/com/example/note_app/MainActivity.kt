@@ -12,7 +12,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.note_app.navigation.NoteScreenNavigation
 import com.example.note_app.ui.theme.Note_AppTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+
+
+
+ @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

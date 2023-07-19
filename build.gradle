@@ -2,7 +2,7 @@ buildscript {
     ext {
         compose_ui_version = '1.2.0'
         hilt_version = '2.44'
-        room_version = '2.5.2z'
+        room_version = '2.5.2'
     }
 
 

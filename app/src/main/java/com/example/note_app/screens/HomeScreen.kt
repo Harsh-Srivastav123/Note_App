@@ -23,7 +23,7 @@ import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 @Preview
 @Composable
-fun HomeScreen(navController: NavController? = null,context: Context?=null ,noteViewModel: NoteViewModel?=null) {
+fun HomeScreen(navController: NavController? = null,context: Context?=null ) {
 
     val systemUiController: SystemUiController = rememberSystemUiController()
     systemUiController.isStatusBarVisible = false // Status bar
