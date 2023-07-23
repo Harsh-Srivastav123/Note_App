@@ -1,9 +1,10 @@
 package com.example.note_app.screens
 
 import android.content.Context
+import android.graphics.Bitmap
 import android.net.Uri
+import android.provider.MediaStore
 import android.util.Log
-import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
@@ -16,10 +17,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Done
 import androidx.compose.material.icons.rounded.KeyboardArrowLeft
 import androidx.compose.material.icons.rounded.UploadFile
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -28,7 +26,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.note_app.components.ImageSlider
 import com.example.note_app.model.Note
@@ -36,28 +33,31 @@ import com.example.note_app.viewModel.NoteViewModel
 import com.google.accompanist.systemuicontroller.SystemUiController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import kotlinx.coroutines.delay
-import java.time.LocalDate
+import kotlinx.coroutines.launch
+import java.io.ByteArrayOutputStream
+import java.io.File
+import java.io.FileOutputStream
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
+import java.util.*
 
 
 @Preview(showBackground = true)
 @Composable
-fun NoteScreen(navController: NavController?=null,context: Context?=null) {
+fun NoteScreen(navController: NavController?=null,context: Context?=null,noteViewModel: NoteViewModel?=null,note_obj: Note?=null) {
     val systemUiController: SystemUiController = rememberSystemUiController()
     systemUiController.isStatusBarVisible = false // Status bar
     systemUiController.isNavigationBarVisible = false // Navigation bar
     systemUiController.isSystemBarsVisible = false // Status & Navigation bars
-    val noteViewModel:NoteViewModel= viewModel()
+
 
     //image from gallery
+
     val galleryImage= remember {
-        mutableStateOf<List<Uri>>(emptyList())
+        mutableStateListOf<String>(emptyList<String>().toString())
     }
-    val launcher= rememberLauncherForActivityResult(contract = ActivityResultContracts.GetMultipleContents(), onResult = {
-        galleryImage.value=it
-    })
+
 
     val title = remember {
         mutableStateOf("")
@@ -65,12 +65,35 @@ fun NoteScreen(navController: NavController?=null,context: Context?=null) {
     val note = remember {
         mutableStateOf("")
     }
+    var id:String=UUID
+        .randomUUID()
+        .toString()
+
+    if(note_obj!=null){
+        title.value=note_obj.title
+        note.value=note_obj.note
+        id=note_obj.id
+        note_obj.imageList?.forEach {
+            galleryImage.add(it)
+        }
+    }
+
     val formatted = remember {
         mutableStateOf("")
     }
-    val timer= remember() {
+    val timer= remember {
         mutableStateOf(true)
     }
+    var uriImage= remember {
+        mutableStateOf<List<Uri>>(emptyList())
+    }
+    val launcher= rememberLauncherForActivityResult(contract = ActivityResultContracts.GetMultipleContents(), onResult = {
+        uriImage.value=it
+    })
+
+    var imageList= mutableListOf<String>(emptyList<String>().toString())
+
+    val coroutineScope = rememberCoroutineScope()
 
     LaunchedEffect(key1 = timer.value ){
        while (timer.value){
@@ -106,6 +129,7 @@ fun NoteScreen(navController: NavController?=null,context: Context?=null) {
                               .size(40.dp)
                               .clickable {
 
+
                               })
                       Spacer(modifier = Modifier.fillMaxWidth(0.68f))
                       Image(imageVector = Icons.Rounded.UploadFile, contentDescription = null,
@@ -119,22 +143,45 @@ fun NoteScreen(navController: NavController?=null,context: Context?=null) {
                           Modifier
                               .size(40.dp)
                               .clickable {
-                                  val s = noteViewModel.size()
-                                  noteViewModel.addNote(
-                                      Note(
-                                          title.value,
-                                          note.value,
-                                          galleryImage.value,
-                                          formatted.value.toString()
+                                  coroutineScope.launch {
+                                      val bitmapList = mutableListOf<Bitmap>()
+//
+                                      uriImage.value.forEach {
+                                          bitmapList.add(
+                                              MediaStore.Images.Media.getBitmap(
+                                                  context?.contentResolver,
+                                                  it
+                                              )
+                                          )
+                                      }
+
+                                      bitmapList.forEach {
+                                          val stream = ByteArrayOutputStream()
+                                          it.compress(Bitmap.CompressFormat.PNG, 100, stream)
+                                          val imageData: ByteArray = stream.toByteArray()
+                                          val fileName =
+                                              "image_" + System.currentTimeMillis() + ".png"
+                                          val imageFile = File(context!!.filesDir, fileName)
+                                          val fos = FileOutputStream(imageFile)
+                                          fos.write(imageData)
+                                          fos.close()
+                                          val path: String = imageFile.absolutePath
+                                          Log.i("path", path)
+                                          imageList.add(path)
+
+                                      }
+                                      noteViewModel?.addNote(
+                                          Note(
+                                              id = id,
+                                              title = title.value,
+                                              note = note.value,
+                                              imageList = imageList,
+                                              timeStamp = formatted.value
+                                          )
                                       )
-                                  )
-                                  Log.i("size", s.toString()+"  " +noteViewModel.size())
 
-                                  Toast
-                                      .makeText(context, "note added", Toast.LENGTH_SHORT)
-                                      .show()
-                                  navController?.navigate("HomeScreen")
-
+                                      navController?.navigate("HomeScreen")
+                                  }
                               })
                   }
 
@@ -183,8 +230,8 @@ fun NoteScreen(navController: NavController?=null,context: Context?=null) {
               )
               Divider()
               Spacer(modifier = Modifier.size(10.dp))
-              if(galleryImage.value.isNotEmpty()){
-                  ImageSlider(galleryImage.value)
+              if(uriImage.value.isNotEmpty()){
+                  ImageSlider(uriImage.value)
                   Divider()
               }
               Spacer(modifier = Modifier.size(10.dp))
@@ -211,4 +258,9 @@ fun NoteScreen(navController: NavController?=null,context: Context?=null) {
       }
     }
 }
+
+//fun DoneClickableEvent(value: String, value1: String, value2: List<Uri>, toString: String) {
+//    val noteViewModel= viewModel<NoteViewModel>()
+//
+//}
 

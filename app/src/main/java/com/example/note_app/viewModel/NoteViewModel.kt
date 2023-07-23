@@ -37,25 +37,24 @@ class NoteViewModel @Inject constructor(val repository: NoteRepository) :ViewMod
     init {
         viewModelScope.launch(Dispatchers.IO) {
             repository.getAllNotes().distinctUntilChanged().collect(){
-                if(it==null){
-                }
-                else{
+                if(it!=null){
                     _noteList.value=it
                 }
+
 
             }
         }
     }
 
-    suspend fun addNote(note:Note)=viewModelScope.launch {
+    fun addNote(note:Note)=viewModelScope.launch {
         repository.addNote(note )
     }
 
-    suspend fun updateNote(note:Note)=viewModelScope.launch {
+    fun updateNote(note:Note)=viewModelScope.launch {
         repository.updateNote(note )
     }
 
-    suspend fun deleteNote(note:Note)=viewModelScope.launch {
-        repository.deleteNote(note)
-    }
+//    fun deleteNote(note:Note)=viewModelScope.launch {
+//        repository.deleteNote(note)
+//    }
 }
