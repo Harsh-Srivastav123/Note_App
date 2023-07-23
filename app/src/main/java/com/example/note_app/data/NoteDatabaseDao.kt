@@ -16,13 +16,13 @@ interface NoteDatabaseDao  {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertNote(note:Note)
 
-    @Update(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun updateNote(note:Note)
+//    @Update(onConflict = OnConflictStrategy.REPLACE)
+//    suspend fun updateNote(note:Note)
 
 //    @Query("DELETE * from note_table")
 //    suspend fun deleteAllNote()
 
-    @Delete
-    suspend fun deleteNote(note:Note)
+    @Query("DELETE from note_table WHERE note_id=:note_id")
+    suspend fun deleteNote(note_id:String)
 
 }

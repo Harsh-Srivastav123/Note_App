@@ -1,7 +1,5 @@
 package com.example.note_app.viewModel
 
-import android.util.Log
-import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.note_app.model.Note
@@ -12,7 +10,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
-import okhttp3.Dispatcher
 import javax.inject.Inject
 
 @HiltViewModel
@@ -23,15 +20,6 @@ class NoteViewModel @Inject constructor(val repository: NoteRepository) :ViewMod
         return noteList.value.size
     }
 
-//    init {
-//        noteList.add(Note("fhsdui","dhfs", listOf(),"fsdfno"))
-//        noteList.add(Note("fhsdui","dhfs", listOf(),"fsdfno"))
-//        noteList.add(Note("fhsdui","dhfs", listOf(),"fsdfno"))
-//        noteList.add(Note("fhsdui","dhfs", listOf(),"fsdfno"))
-//        noteList.add(Note("fhsdui","dhfs", listOf(),"fsdfno"))
-//        noteList.add(Note("fhsdui","dhfs", listOf(),"fsdfno"))
-//        noteList.add(Note("fhsdui","dhfs", listOf(),"fsdfno"))
-//    }
 
 
     init {
@@ -50,8 +38,11 @@ class NoteViewModel @Inject constructor(val repository: NoteRepository) :ViewMod
         repository.addNote(note )
     }
 
-    fun updateNote(note:Note)=viewModelScope.launch {
-        repository.updateNote(note )
+//    fun updateNote(note:Note)=viewModelScope.launch {
+//        repository.updateNote(note )
+//    }
+    fun deleteNote(note_id:String)=viewModelScope.launch {
+        repository.deleteNote(note_id)
     }
 
 //    fun deleteNote(note:Note)=viewModelScope.launch {

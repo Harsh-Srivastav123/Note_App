@@ -78,7 +78,7 @@ fun HomeScreen(navController: NavController? = null,context: Context,noteViewMod
                 if(noteList!=null){
                     LazyColumn{
                         items(items=noteList.reversed()){
-                            NoteRow(note = it, context =context , onNoteClick ={
+                            NoteRow(note = it, context =context ,noteViewModel=noteViewModel, onNoteClick ={
                                 navController?.currentBackStackEntry?.savedStateHandle?.set(key="note_obj", value = it)
                                 navController?.navigate("NoteScreen")
                             } )
