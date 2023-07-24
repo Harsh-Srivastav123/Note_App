@@ -3,6 +3,7 @@ package com.example.note_app.components
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -15,9 +16,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
@@ -29,6 +28,8 @@ import coil.compose.rememberAsyncImagePainter
 import com.example.note_app.model.Note
 import com.example.note_app.ui.theme.Primary
 import com.example.note_app.viewModel.NoteViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 import java.io.File
 
 
@@ -58,9 +59,9 @@ fun NoteRow(
                             //noteViewModel?.deleteNote(note.id)
                             isDialog.value = true
                         },
-                        onTap = {
-                            expanded.value=!expanded.value
-                        })
+                            onTap = {
+                                expanded.value = !expanded.value
+                            })
                     },
                 shape = RoundedCornerShape(corner = CornerSize(16.dp)),
                 elevation = 8.dp
@@ -124,7 +125,19 @@ fun NoteRow(
                     //row ended
 
                     AnimatedVisibility(visible = expanded.value) {
-                        Column {
+                        Column(Modifier.padding(4.dp)) {
+                           val paths= mutableListOf<String>(emptyList<String>().toString())
+                           note.imageList!!.forEach {
+                               if(it.length>10){
+                                   Log.i("path_image", it)
+                                   paths.add(it)
+                               }
+                           }
+                            if(paths.size>1){
+                                Log.i("here", "NoteRow: "+paths.size.toString())
+                                ImageSliderBitmap(imageList = paths)
+                            }
+                            
                             Spacer(modifier = Modifier.size(5.dp))
                             Divider()
                             Text(

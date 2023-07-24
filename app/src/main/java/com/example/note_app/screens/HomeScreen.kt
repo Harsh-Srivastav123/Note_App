@@ -31,10 +31,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun HomeScreen(navController: NavController? = null,context: Context,noteViewModel: NoteViewModel?=null ) {
 
-    val systemUiController: SystemUiController = rememberSystemUiController()
-    systemUiController.isStatusBarVisible = false // Status bar
-    systemUiController.isNavigationBarVisible = false // Navigation bar
-    systemUiController.isSystemBarsVisible = false // Status & Navigation bars
+
 
 
     Surface(
