@@ -43,3 +43,7 @@ Please ensure that your Android Studio environment is set up correctly with the 
 
 ## Conclusion
 This Note App showcases the usage of modern Android development tools and architecture patterns. By following MVVM, using Jetpack Compose for UI, Room for data storage, and Dagger Hilt for dependency injection, the app achieves better modularity, maintainability, and user experience. Feel free to explore and modify the app as per your needs and preferences. Happy coding!
+
+
+![forthebadge](https://forthebadge.com/images/badges/built-with-love.svg)
+![ForTheBadge ANDROID](https://forthebadge.com/images/badges/built-for-android.svg)
