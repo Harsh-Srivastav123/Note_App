@@ -1,7 +1,7 @@
 # Note App using Android, Jetpack Compose, Dagger Hilt, Room Database, Navigation, and MVVM
 
 ## Overview
-This is a simple Note App built for Android using various modern technologies and architecture patterns. The app follows the Model-View-ViewModel (MVVM) architecture and incorporates Android Jetpack Compose for the user interface, Dagger Hilt for dependency injection, and Room Database for local data storage and retrieval. Navigation is handled using Android Navigation components.
+This is a simple Note App built for Android using various modern technologies and architecture patterns. The app follows the Model-View-ViewModel (MVVM) architecture and incorporates Android Jetpack Compose for the user interface, Dagger Hilt for dependency injection, Room Database for local data storage and retrieval and Biometric Lock integration. Navigation is handled using Android Navigation components.
 
 ## Features
 - Add, edit, update and delete notes.
@@ -10,6 +10,7 @@ This is a simple Note App built for Android using various modern technologies an
 - Notes are stored locally in a Room Database.
 - App follows the MVVM architecture for better separation of concerns.
 - Dependency injection using Dagger Hilt for cleaner and modular code.
+- Biometric lock integration for enhanced security.
 
 ## Tech Stack
 - Android Jetpack Compose: For building the user interface using a declarative approach.
