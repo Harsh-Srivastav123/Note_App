@@ -42,6 +42,14 @@ The project uses the following dependencies:
 
 Please ensure that your Android Studio environment is set up correctly with the required dependencies and Android SDK versions to run the app.
 
+## video
+
+
+https://github.com/Harsh-Srivastav123/Note_App/assets/114308429/ff7b9add-768e-42a0-a090-9230c0feab0a
+
+
+
+
 ## Conclusion
 This Note App showcases the usage of modern Android development tools and architecture patterns. By following MVVM, using Jetpack Compose for UI, Room for data storage, and Dagger Hilt for dependency injection, the app achieves better modularity, maintainability, and user experience. Feel free to explore and modify the app as per your needs and preferences. Happy coding!
 
